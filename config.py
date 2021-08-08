@@ -29,3 +29,4 @@ INIT = 0
 GAME = 1
 QUIT = 2
 END = 3
+INIT2 = 4
