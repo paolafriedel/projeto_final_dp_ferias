@@ -1,7 +1,7 @@
 import pygame
 from os import path
 from assets import load_assets, SCORE_FONT
-from config import IMG_DIR, BLACK, FPS, QUIT, YELLOW, WIDTH, INIT, HEIGHT
+from config import IMG_DIR, BLACK, FPS, QUIT, YELLOW, WIDTH, INIT, HEIGHT, GAME
 
 
 def end_screen(screen, score):
@@ -12,9 +12,6 @@ def end_screen(screen, score):
     background = pygame.image.load(path.join(IMG_DIR, 'gameover.jpg')).convert()
     image = pygame.transform.scale(background, (WIDTH, HEIGHT))
     background_rect = image.get_rect()
-
-    # meteor_img = pygame.image.load('assets/img/meteorBrown_med1.png').convert_alpha()
-    # meteor_img_small = pygame.transform.scale(meteor_img, (METEOR_WIDTH, METEOR_HEIGHT))
 
     running = True
     while running:
@@ -30,8 +27,12 @@ def end_screen(screen, score):
                 running = False
 
             if event.type == pygame.KEYUP:
-                state = INIT
-                running = False
+                if event.key == pygame.K_RETURN:
+                    state = INIT
+                    running = False
+                else:
+                    state = QUIT
+                    running = False
 
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(BLACK)

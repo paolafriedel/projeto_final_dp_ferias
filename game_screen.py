@@ -94,8 +94,8 @@ def game_screen(window):
                 score += 100
                 if score % 1000 == 0:
                     lives += 1
-                if score % 100 == 0:
-                    met = 100
+                if score % 400 == 0:
+                    met = 4
                     for i in range(met):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
