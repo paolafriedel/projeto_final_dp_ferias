@@ -1,7 +1,7 @@
 import random
 import pygame
 from config import WIDTH, HEIGHT, METEOR_WIDTH, METEOR_HEIGHT, SHIP_WIDTH, SHIP_HEIGHT
-from assets import SHIP_IMG, PEW_SOUND, METEOR_IMG, BULLET_IMG, EXPLOSION_ANIM, BALL_IMG, BOMB_IMG, MAIS_BULLET
+from assets import SHIP_IMG, PEW_SOUND, METEOR_IMG, BULLET_IMG, EXPLOSION_ANIM, CORA_IMG, MAIS_BULLET, BOMB_IMG
 
 
 class Ship(pygame.sprite.Sprite):
@@ -121,12 +121,12 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-class Ball(pygame.sprite.Sprite):
+class Coracao(pygame.sprite.Sprite):
     def __init__(self, assets):
         # Construtor da classe mãe (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = assets[BALL_IMG]
+        self.image = assets[CORA_IMG]
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)

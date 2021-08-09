@@ -2,7 +2,7 @@ import pygame
 from pygame.constants import QUIT
 from config import FPS, WIDTH, HEIGHT, BLACK, YELLOW, RED, END
 from assets import load_assets, DESTROY_SOUND, BOOM_SOUND, BACKGROUND, SCORE_FONT
-from sprites import Ship, Meteor, Explosion, Ball, Bomb, Mais_bullets
+from sprites import Ship, Meteor, Explosion, Coracao, Bomb, Mais_bullets
 
 
 def game_screen(window):
@@ -15,16 +15,15 @@ def game_screen(window):
     all_sprites = pygame.sprite.Group()
     all_meteors = pygame.sprite.Group()
     all_bullets = pygame.sprite.Group()
-    all_balls = pygame.sprite.Group()
     all_bombs = pygame.sprite.Group()
-    all_balls = pygame.sprite.Group()
+    all_cora = pygame.sprite.Group()
     all_mais_bullets = pygame.sprite.Group()
 
     groups = {}
     groups['all_sprites'] = all_sprites
     groups['all_meteors'] = all_meteors
     groups['all_bullets'] = all_bullets
-    groups['all_balls'] = all_balls
+    groups['all_cora'] = all_cora
     groups['all_bombs'] = all_bombs
     groups['all_mais_bullets'] = all_mais_bullets
 
@@ -32,7 +31,7 @@ def game_screen(window):
     player = Ship(groups, assets)
     all_sprites.add(player)
     # Criando os meteoros
-    for i in range(8):
+    for i in range(6):
         meteor = Meteor(assets)
         all_sprites.add(meteor)
         all_meteors.add(meteor)
@@ -108,7 +107,7 @@ def game_screen(window):
                 score += 100
                 if score % 1000 == 0:
                     lives += 1
-                if score % 4000000 == 0:
+                if score % 400 == 0:
                     met = 2
                     for i in range(met):
                         meteor = Meteor(assets)
@@ -120,13 +119,12 @@ def game_screen(window):
                         bomb = Bomb(assets)
                         all_sprites.add(bomb)
                         all_bombs.add(bomb)
-
                 if score % 200 == 0:
-                    ba = 1
-                    for i in range(ba):
-                        ball = Ball(assets)
-                        all_sprites.add(ball)
-                        all_balls.add(ball)
+                    co = 1
+                    for i in range(co):
+                        coracao = Coracao(assets)
+                        all_sprites.add(coracao)
+                        all_cora.add(coracao)
                 if score % 300 == 0:
                     bala = 1
                     for i in range(bala):
@@ -161,7 +159,7 @@ def game_screen(window):
                 explosion_tick = pygame.time.get_ticks()
                 explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
 
-            hits_balls = pygame.sprite.groupcollide(all_balls, all_bullets, True, True, pygame.sprite.collide_mask)
+            hits_balls = pygame.sprite.groupcollide(all_cora, all_bullets, True, True, pygame.sprite.collide_mask)
             if len(hits_balls) > 0:
                 # Toca o som da colisão
                 assets[BOOM_SOUND].play()
