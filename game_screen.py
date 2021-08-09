@@ -15,10 +15,12 @@ def game_screen(window):
     all_sprites = pygame.sprite.Group()
     all_meteors = pygame.sprite.Group()
     all_bullets = pygame.sprite.Group()
+    all_balls = pygame.sprite.Group()
     groups = {}
     groups['all_sprites'] = all_sprites
     groups['all_meteors'] = all_meteors
     groups['all_bullets'] = all_bullets
+    groups['all_balls'] = all_balls
 
     # Criando o jogador
     player = Ship(groups, assets)
@@ -92,6 +94,12 @@ def game_screen(window):
                 score += 100
                 if score % 1000 == 0:
                     lives += 1
+                if score % 100 == 0:
+                    met = 100
+                    for i in range(met):
+                        meteor = Meteor(assets)
+                        all_sprites.add(meteor)
+                        all_meteors.add(meteor)
 
             # Verifica se houve colisão entre nave e meteoro
             hits = pygame.sprite.spritecollide(player, all_meteors, True, pygame.sprite.collide_mask)

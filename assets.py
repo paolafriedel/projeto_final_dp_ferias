@@ -14,6 +14,8 @@ SCORE_FONT = 'score_font'
 BOOM_SOUND = 'boom_sound'
 DESTROY_SOUND = 'destroy_sound'
 PEW_SOUND = 'pew_sound'
+# BALL_IMG = 'bola de sinuca 8'
+# BOMB_IMG = 'bomba'
 
 
 def load_assets():
@@ -24,6 +26,10 @@ def load_assets():
     assets[SHIP_IMG] = pygame.image.load(os.path.join(IMG_DIR, 'playerShip1_orange.png')).convert_alpha()
     assets[SHIP_IMG] = pygame.transform.scale(assets['ship_img'], (SHIP_WIDTH, SHIP_HEIGHT))
     assets[BULLET_IMG] = pygame.image.load(os.path.join(IMG_DIR, 'laserRed16.png')).convert_alpha()
+    # assets[BALL_IMG] = pygame.image.load(os.path.join(IMG_DIR, 'bola de sinuca 8.png')).convert_alpha()
+    # assets[BALL_IMG] = pygame.transform.scale(assets['bola de sinuca 8.png'], (METEOR_WIDTH, METEOR_HEIGHT))
+    # assets[BOMB_IMG] = pygame.image.load(os.path.join(IMG_DIR, 'bomba.png')).convert_alpha()
+    # assets[BOMB_IMG] = pygame.transform.scale(assets['bomba.png'], (METEOR_WIDTH, METEOR_HEIGHT))
     explosion_anim = []
     for i in range(9):
         # Os arquivos de animação são numerados de 00 a 08

@@ -9,7 +9,7 @@ def end_screen(screen, score):
     clock = pygame.time.Clock()
     assets = load_assets()
     # Carrega o fundo da tela final
-    background = pygame.image.load(path.join(IMG_DIR, 'final.jpg')).convert()
+    background = pygame.image.load(path.join(IMG_DIR, 'gameover.jpg')).convert()
     image = pygame.transform.scale(background, (WIDTH, HEIGHT))
     background_rect = image.get_rect()
 

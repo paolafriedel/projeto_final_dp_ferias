@@ -25,6 +25,11 @@ while state != QUIT:
         state, score = game_screen(window)
     elif state == END:
         state = end_screen(window, score)
+        for event in pygame.event.get():
+            if event.key == pygame.K_KP_ENTER:
+                state == GAME
+            else:
+                state == QUIT
     else:
         state = QUIT
 
