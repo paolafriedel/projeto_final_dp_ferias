@@ -2,7 +2,7 @@ import pygame
 from pygame.constants import QUIT
 from config import FPS, WIDTH, HEIGHT, BLACK, YELLOW, RED, END
 from assets import load_assets, DESTROY_SOUND, BOOM_SOUND, BACKGROUND, SCORE_FONT
-from sprites import Ship, Meteor, Explosion, Ball, Bomb 
+from sprites import Ship, Meteor, Explosion, Ball, Bomb, Mais_bullets
 
 
 def game_screen(window):
@@ -18,6 +18,7 @@ def game_screen(window):
     all_balls = pygame.sprite.Group()
     all_bombs = pygame.sprite.Group()
     all_balls = pygame.sprite.Group()
+    all_mais_bullets = pygame.sprite.Group()
 
     groups = {}
     groups['all_sprites'] = all_sprites
@@ -25,6 +26,7 @@ def game_screen(window):
     groups['all_bullets'] = all_bullets
     groups['all_balls'] = all_balls
     groups['all_bombs'] = all_bombs
+    groups['all_mais_bullets'] = all_mais_bullets
 
     # Criando o jogador
     player = Ship(groups, assets)
@@ -98,7 +100,7 @@ def game_screen(window):
                 score += 100
                 if score % 1000 == 0:
                     lives += 1
-                if score % 400 == 0:
+                if score % 4000000 == 0:
                     met = 2
                     for i in range(met):
                         meteor = Meteor(assets)
@@ -117,6 +119,12 @@ def game_screen(window):
                         ball = Ball(assets)
                         all_sprites.add(ball)
                         all_balls.add(ball)
+                if score % 300 == 0:
+                    bala = 1
+                    for i in range(bala):
+                        bala = Mais_bullets(assets)
+                        all_sprites.add(bala)
+                        all_mais_bullets.add(bala)
 
             # Verifica se houve colisão entre nave e meteoro
             hits = pygame.sprite.spritecollide(player, all_meteors, True, pygame.sprite.collide_mask)
@@ -145,24 +153,30 @@ def game_screen(window):
                 explosion_tick = pygame.time.get_ticks()
                 explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
 
-            hits_balls = pygame.sprite.spritecollide(player, all_balls, True, pygame.sprite.collide_mask)
+            hits_balls = pygame.sprite.groupcollide(all_balls, all_bullets, True, True, pygame.sprite.collide_mask)
             if len(hits_balls) > 0:
                 # Toca o som da colisão
                 assets[BOOM_SOUND].play()
-                player.kill()
                 lives += 1
-                player.multi_shots = True
-                explosao = Explosion(player.rect.center, assets)
-                all_sprites.add(explosao)
-                state = EXPLODING
-                keys_down = {}
-                explosion_tick = pygame.time.get_ticks()
-                explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
+                for bola in hits_balls:
+                    explosao = Explosion(bola.rect.center, assets)
+                    all_sprites.add(explosao)
+                
+                # player.start_multi_shots()
+            hits_mais_bullets = pygame.sprite.groupcollide(all_mais_bullets, all_bullets, True, True, pygame.sprite.collide_mask)
+            if len(hits_mais_bullets) > 0:
+                # Toca o som da colisão
+                assets[BOOM_SOUND].play()
+                for bala in hits_mais_bullets:
+                    player.start_multi_shots()   
+                    explosao = Explosion(bala.rect.center, assets)
+                    all_sprites.add(explosao)
+            
 
         elif state == EXPLODING:
             now = pygame.time.get_ticks()
             if now - explosion_tick > explosion_duration:
-                if lives == 0:
+                if lives <= 0:
                     state = DONE
                     return END, score
                 else:
