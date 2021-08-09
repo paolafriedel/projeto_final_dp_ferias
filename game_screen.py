@@ -2,7 +2,7 @@ import pygame
 from pygame.constants import QUIT
 from config import FPS, WIDTH, HEIGHT, BLACK, YELLOW, RED, END
 from assets import load_assets, DESTROY_SOUND, BOOM_SOUND, BACKGROUND, SCORE_FONT
-from sprites import Ship, Meteor, Explosion, Ball
+from sprites import Ship, Meteor, Explosion, Ball, Bomb 
 
 
 def game_screen(window):
@@ -16,7 +16,7 @@ def game_screen(window):
     all_meteors = pygame.sprite.Group()
     all_bullets = pygame.sprite.Group()
     all_balls = pygame.sprite.Group()
-    # all_bombs = pygame.sprite.Group()
+    all_bombs = pygame.sprite.Group()
     all_balls = pygame.sprite.Group()
 
     groups = {}
@@ -24,7 +24,7 @@ def game_screen(window):
     groups['all_meteors'] = all_meteors
     groups['all_bullets'] = all_bullets
     groups['all_balls'] = all_balls
-    # groups['all_bombs'] = all_bombs
+    groups['all_bombs'] = all_bombs
 
     # Criando o jogador
     player = Ship(groups, assets)
@@ -82,7 +82,7 @@ def game_screen(window):
 
         if state == PLAYING:
             # Verifica se houve colisão entre tiro e meteoro
-            hits = pygame.sprite.groupcollide(all_meteors, all_bullets, True, True, pygame.sprite.collide_mask)
+            hits = pygame.sprite.groupcollide(all_meteors, all_bullets, True, True, pygame.sprite.collide_mask)#aqui
             for meteor in hits: # As chaves são os elementos do primeiro grupo (meteoros) que colidiram com alguma bala
                 # O meteoro e destruido e precisa ser recriado
                 assets[DESTROY_SOUND].play()
@@ -104,12 +104,12 @@ def game_screen(window):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                # if score % 100 == 0:
-                #     bo = 1
-                #     for i in range(bo):
-                #         bomb = Bomb(assets)
-                #         all_sprites.add(bomb)
-                #         all_bombs.add(bomb)
+                if score % 100 == 0:
+                    bo = 1
+                    for i in range(bo):
+                        bomb = Bomb(assets)
+                        all_sprites.add(bomb)
+                        all_bombs.add(bomb)
 
                 if score % 200 == 0:
                     ba = 1
@@ -132,18 +132,18 @@ def game_screen(window):
                 explosion_tick = pygame.time.get_ticks()
                 explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
 
-            # hits_bombs = pygame.sprite.spritecollide(player, all_bombs, True, pygame.sprite.collide_mask)
-            # if len(hits_bombs) > 0:
-            #     # Toca o som da colisão
-            #     assets[BOOM_SOUND].play()
-            #     player.kill()
-            #     lives -= 2
-            #     explosao = Explosion(player.rect.center, assets)
-            #     all_sprites.add(explosao)
-            #     state = EXPLODING
-            #     keys_down = {}
-            #     explosion_tick = pygame.time.get_ticks()
-            #     explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
+            hits_bombs = pygame.sprite.spritecollide(player, all_bombs, True, pygame.sprite.collide_mask)
+            if len(hits_bombs) > 0:
+                # Toca o som da colisão
+                assets[BOOM_SOUND].play()
+                player.kill()
+                lives -= 2
+                explosao = Explosion(player.rect.center, assets)
+                all_sprites.add(explosao)
+                state = EXPLODING
+                keys_down = {}
+                explosion_tick = pygame.time.get_ticks()
+                explosion_duration = explosao.frame_ticks * len(explosao.explosion_anim) + 400
 
             hits_balls = pygame.sprite.spritecollide(player, all_balls, True, pygame.sprite.collide_mask)
             if len(hits_balls) > 0:
@@ -151,6 +151,7 @@ def game_screen(window):
                 assets[BOOM_SOUND].play()
                 player.kill()
                 lives += 1
+                player.multi_shots = True
                 explosao = Explosion(player.rect.center, assets)
                 all_sprites.add(explosao)
                 state = EXPLODING

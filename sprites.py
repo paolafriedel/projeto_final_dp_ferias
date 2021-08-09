@@ -1,7 +1,7 @@
 import random
 import pygame
 from config import WIDTH, HEIGHT, METEOR_WIDTH, METEOR_HEIGHT, SHIP_WIDTH, SHIP_HEIGHT
-from assets import SHIP_IMG, PEW_SOUND, METEOR_IMG, BULLET_IMG, EXPLOSION_ANIM, BALL_IMG
+from assets import SHIP_IMG, PEW_SOUND, METEOR_IMG, BULLET_IMG, EXPLOSION_ANIM, BALL_IMG, BOMB_IMG
 
 
 class Ship(pygame.sprite.Sprite):
@@ -21,6 +21,7 @@ class Ship(pygame.sprite.Sprite):
         # Só será possível atirar uma vez a cada 500 milissegundos
         self.last_shot = pygame.time.get_ticks()
         self.shoot_ticks = 500
+        self.multi_shots = False
 
     def update(self):
         # Atualização da posição da nave
@@ -31,6 +32,8 @@ class Ship(pygame.sprite.Sprite):
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+
+    def starr_multi_shots(self):
 
     def shoot(self):
         # Verifica se pode atirar
@@ -43,9 +46,16 @@ class Ship(pygame.sprite.Sprite):
             # Marca o tick da nova imagem.
             self.last_shot = now
             # A nova bala vai ser criada logo acima e no centro horizontal da nave
-            new_bullet = Bullet(self.assets, self.rect.top, self.rect.centerx)
+            new_bullet = Bullet(self.assets, self.rect.top, self.rect.centerx, 0)
+            new_bullet2 = Bullet(self.assets, self.rect.top, self.rect.centerx, 3)
+            new_bullet3 = Bullet(self.assets, self.rect.top, self.rect.centerx, -3)
             self.groups['all_sprites'].add(new_bullet)
             self.groups['all_bullets'].add(new_bullet)
+            if self.multi_shots == True:
+                self.groups['all_sprites'].add(new_bullet2)
+                self.groups['all_bullets'].add(new_bullet2)
+                self.groups['all_sprites'].add(new_bullet3)
+                self.groups['all_bullets'].add(new_bullet3)
             self.assets[PEW_SOUND].play()
 
 class Meteor(pygame.sprite.Sprite):
@@ -76,7 +86,7 @@ class Meteor(pygame.sprite.Sprite):
 # Classe Bullet que representa os tiros
 class Bullet(pygame.sprite.Sprite):
     # Construtor da classe.
-    def __init__(self, assets, bottom, centerx):
+    def __init__(self, assets, bottom, centerx, speedx):
         # Construtor da classe mãe (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
@@ -88,9 +98,11 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.centerx = centerx
         self.rect.bottom = bottom
         self.speedy = -10  # Velocidade fixa para cima
+        self.speedx = speedx
 
     def update(self):
         # A bala só se move no eixo y
+        self.rect.x += self.speedx
         self.rect.y += self.speedy
 
         # Se o tiro passar do inicio da tela, morre.
@@ -124,30 +136,30 @@ class Ball(pygame.sprite.Sprite):
             self.speedy = random.randint(2, 9)
 
 
-# class Bomb(pygame.sprite.Sprite):
-#     def __init__(self, assets):
-#         # Construtor da classe mãe (Sprite).
-#         pygame.sprite.Sprite.__init__(self)
+class Bomb(pygame.sprite.Sprite):
+    def __init__(self, assets):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
 
-#         self.image = assets[BOMB_IMG]
-#         self.mask = pygame.mask.from_surface(self.image)
-#         self.rect = self.image.get_rect()
-#         self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)
-#         self.rect.y = random.randint(-100, -METEOR_HEIGHT)
-#         self.speedx = random.randint(-3, 3)
-#         self.speedy = random.randint(2, 9)
+        self.image = assets[BOMB_IMG]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)
+        self.rect.y = random.randint(-100, -METEOR_HEIGHT)
+        self.speedx = random.randint(-3, 3)
+        self.speedy = random.randint(2, 9)
 
-#     def update(self):
-#         # Atualizando a posição do meteoro
-#         self.rect.x += self.speedx
-#         self.rect.y += self.speedy
-#         # Se o meteoro passar do final da tela, volta para cima e sorteia
-#         # novas posições e velocidades
-#         if self.rect.top > HEIGHT or self.rect.right < 0 or self.rect.left > WIDTH:
-#             self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)
-#             self.rect.y = random.randint(-100, -METEOR_HEIGHT)
-#             self.speedx = random.randint(-3, 3)
-#             self.speedy = random.randint(2, 9)
+    def update(self):
+        # Atualizando a posição do meteoro
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        # Se o meteoro passar do final da tela, volta para cima e sorteia
+        # novas posições e velocidades
+        if self.rect.top > HEIGHT or self.rect.right < 0 or self.rect.left > WIDTH:
+            self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)
+            self.rect.y = random.randint(-100, -METEOR_HEIGHT)
+            self.speedx = random.randint(-3, 3)
+            self.speedy = random.randint(2, 9)
 
 
 # Classe que representa uma explosão de meteoro
