@@ -15,6 +15,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
+        self.speedy = 0
         self.groups = groups
         self.assets = assets
 
@@ -22,18 +23,23 @@ class Ship(pygame.sprite.Sprite):
         self.last_shot = pygame.time.get_ticks()
         self.shoot_ticks = 500
         self.last_big_shot = pygame.time.get_ticks()
-        self.big_shoot_ticks = 1000
+        self.big_shoot_ticks = 5000
         self.multi_shots = False
 
     def update(self):
         # Atualização da posição da nave
         self.rect.x += self.speedx
+        self.rect.y +=self.speedy
 
         # Mantem dentro da tela
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT 
+        if self.rect.top < 0:
+            self.rect.top = 0
 
     def start_multi_shots(self):
         self.multi_shots = True
