@@ -110,13 +110,13 @@ def game_screen(window):
                 score += 100
                 if score % 1000 == 0:
                     lives += 1
-                if score % 1000 == 0:
-                    met = 2
+                if score % 500 == 0:
+                    met = 3
                     for i in range(met):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                if score % 1400 == 0:
+                if score % 1200 == 0:
                     bo = 1
                     for i in range(bo):
                         bomb = Bomb(assets)
@@ -128,7 +128,7 @@ def game_screen(window):
                         coracao = Coracao(assets)
                         all_sprites.add(coracao)
                         all_cora.add(coracao)
-                if score % 1200 == 0:
+                if score % 1100 == 0:
                     bala = 1
                     for i in range(bala):
                         bala = Mais_bullets(assets)
