@@ -2,7 +2,7 @@ import pygame
 from pygame.constants import QUIT
 from config import FPS, WIDTH, HEIGHT, BLACK, YELLOW, RED, END
 from assets import load_assets, DESTROY_SOUND, BOOM_SOUND, BACKGROUND, SCORE_FONT
-from sprites import Ship, Meteor, Explosion, Coracao, Bomb, Mais_bullets
+from sprites import Ship, Meteor, Explosion, Coracao, Bomb, Mais_bullets, Escudo    
 
 
 def game_screen(window):
@@ -18,6 +18,7 @@ def game_screen(window):
     all_bombs = pygame.sprite.Group()
     all_cora = pygame.sprite.Group()
     all_mais_bullets = pygame.sprite.Group()
+    all_shields = pygame.sprite.Group()
 
     groups = {}
     groups['all_sprites'] = all_sprites
@@ -26,6 +27,7 @@ def game_screen(window):
     groups['all_cora'] = all_cora
     groups['all_bombs'] = all_bombs
     groups['all_mais_bullets'] = all_mais_bullets
+    groups['all_shields'] = all_shields
 
     # Criando o jogador
     player = Ship(groups, assets)
@@ -44,6 +46,7 @@ def game_screen(window):
     keys_down = {}
     score = 0
     lives = 3
+    shield = 3
 
     # ===== Loop principal =====
     pygame.mixer.music.play(loops=-1)
@@ -113,7 +116,7 @@ def game_screen(window):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                if score % 600 == 0:
+                if score % 100 == 0:
                     bo = 1
                     for i in range(bo):
                         bomb = Bomb(assets)
@@ -131,6 +134,12 @@ def game_screen(window):
                         bala = Mais_bullets(assets)
                         all_sprites.add(bala)
                         all_mais_bullets.add(bala)
+                if score % 2000 == 0:
+                    escudo = 1
+                    for i in range(escudo):
+                        escudo = Escudo(assets)
+                        all_sprites.add(escudo)
+                        all_shields.add(escudo)
 
             # Verifica se houve colisão entre nave e meteoro
             hits = pygame.sprite.spritecollide(player, all_meteors, True, pygame.sprite.collide_mask)
@@ -151,7 +160,9 @@ def game_screen(window):
                 # Toca o som da colisão
                 assets[BOOM_SOUND].play()
                 player.kill()
-                lives -= 2
+                shield -= 2
+                if shield<=0:
+                    lives-=2
                 explosao = Explosion(player.rect.center, assets)
                 all_sprites.add(explosao)
                 state = EXPLODING
@@ -206,6 +217,12 @@ def game_screen(window):
         text_surface = assets[SCORE_FONT].render(chr(9829) * lives, True, RED)
         text_rect = text_surface.get_rect()
         text_rect.bottomleft = (10, HEIGHT - 10)
+        window.blit(text_surface, text_rect)
+
+        # Desenhando os escudos
+        text_surface = assets[SCORE_FONT].render(chr(9829) * shield, True, YELLOW)
+        text_rect = text_surface.get_rect()
+        text_rect.bottomright = (WIDTH, HEIGHT - 10)
         window.blit(text_surface, text_rect)
 
         pygame.display.update()  # Mostra o novo frame para o jogador

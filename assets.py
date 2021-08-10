@@ -17,6 +17,7 @@ PEW_SOUND = 'pew_sound'
 CORA_IMG = 'coracao.png'
 BOMB_IMG = 'bomba.png'
 MAIS_BULLET = 'tiros.jpg'
+ES_IMG = 'shield.png'
 
 
 def load_assets():
@@ -33,6 +34,8 @@ def load_assets():
     assets[BOMB_IMG] = pygame.transform.scale(assets['bomba.png'], (METEOR_WIDTH, METEOR_HEIGHT))
     assets[MAIS_BULLET] = pygame.image.load(os.path.join(IMG_DIR, 'tiros.jpg')).convert_alpha()
     assets[MAIS_BULLET] = pygame.transform.scale(assets['tiros.jpg'], (60, 48))
+    assets[ES_IMG] = pygame.image.load(os.path.join(IMG_DIR, 'shield.png')).convert_alpha()
+    assets[ES_IMG] = pygame.transform.scale(assets['shield.png'], (METEOR_WIDTH, METEOR_HEIGHT))
     explosion_anim = []
     for i in range(9):
         # Os arquivos de animação são numerados de 00 a 08
