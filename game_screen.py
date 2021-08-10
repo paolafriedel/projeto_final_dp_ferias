@@ -116,7 +116,7 @@ def game_screen(window):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                if score % 100 == 0:
+                if score % 1400 == 0:
                     bo = 1
                     for i in range(bo):
                         bomb = Bomb(assets)
@@ -128,7 +128,7 @@ def game_screen(window):
                         coracao = Coracao(assets)
                         all_sprites.add(coracao)
                         all_cora.add(coracao)
-                if score % 1100 == 0:
+                if score % 1200 == 0:
                     bala = 1
                     for i in range(bala):
                         bala = Mais_bullets(assets)
@@ -160,7 +160,7 @@ def game_screen(window):
                 # Toca o som da colisão
                 assets[BOOM_SOUND].play()
                 player.kill()
-                shield -= 2
+                shield -= 1
                 if shield<=0:
                     lives-=2
                 explosao = Explosion(player.rect.center, assets)
@@ -184,6 +184,15 @@ def game_screen(window):
             if len(hits_mais_bullets) > 0:
                 # Toca o som da colisão
                 assets[BOOM_SOUND].play()
+                for bala in hits_mais_bullets:
+                    player.start_multi_shots()   
+                    explosao = Explosion(bala.rect.center, assets)
+                    all_sprites.add(explosao)
+            hits_escudos = pygame.sprite.groupcollide(all_shields, all_bullets, True, True, pygame.sprite.collide_mask)
+            if len(hits_escudos) > 0:
+                # Toca o som da colisão
+                assets[BOOM_SOUND].play()
+                shield+=1
                 for bala in hits_mais_bullets:
                     player.start_multi_shots()   
                     explosao = Explosion(bala.rect.center, assets)
