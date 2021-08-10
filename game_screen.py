@@ -107,25 +107,25 @@ def game_screen(window):
                 score += 100
                 if score % 1000 == 0:
                     lives += 1
-                if score % 400 == 0:
+                if score % 1000 == 0:
                     met = 2
                     for i in range(met):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                if score % 100 == 0:
+                if score % 600 == 0:
                     bo = 1
                     for i in range(bo):
                         bomb = Bomb(assets)
                         all_sprites.add(bomb)
                         all_bombs.add(bomb)
-                if score % 200 == 0:
+                if score % 800 == 0:
                     co = 1
                     for i in range(co):
                         coracao = Coracao(assets)
                         all_sprites.add(coracao)
                         all_cora.add(coracao)
-                if score % 300 == 0:
+                if score % 1100 == 0:
                     bala = 1
                     for i in range(bala):
                         bala = Mais_bullets(assets)
