@@ -116,13 +116,13 @@ def game_screen(window):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                if score % 1200 == 0:
+                if score % 800 == 0:
                     bo = 1
                     for i in range(bo):
                         bomb = Bomb(assets)
                         all_sprites.add(bomb)
                         all_bombs.add(bomb)
-                if score % 800 == 0:
+                if score % 900 == 0:
                     co = 1
                     for i in range(co):
                         coracao = Coracao(assets)

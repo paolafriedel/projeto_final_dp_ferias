@@ -1,6 +1,9 @@
 # projeto_final_dp_ferias
 Projeto Final DP Ferias
 
+Importar as bibliotecas pygame, random e os. Para jogar o jogo, o arquivo a ser inicializado é o jogo.py. No inicio do jogo aparecerão telas que irão explicar os elementos e teclas que serão utilizados.
+
+
 Funcionalidades implementadas:
     Tela de game over mostrando a pontuação;
     Criar uma tela de instruções, que mostra o que cada tecla faz;
