@@ -116,7 +116,7 @@ def game_screen(window):
                         meteor = Meteor(assets)
                         all_sprites.add(meteor)
                         all_meteors.add(meteor)
-                if score % 800 == 0:
+                if score % 600 == 0:
                     bo = 1
                     for i in range(bo):
                         bomb = Bomb(assets)
